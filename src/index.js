@@ -66,7 +66,6 @@ async function main() {
           options: editorOptions,
         }),
       open: (...args) => {
-        console.log("args",args)
         let currentEditor
         let choiceEditor = args[0].results.editor
         editorOptions.forEach((e) => {
