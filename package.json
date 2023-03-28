@@ -1,5 +1,5 @@
 {
-  "name": "itemplate",
+  "name": "itpls",
   "version": "0.0.0",
   "description": "a cli that start blank project from target template",
   "main": "index.js",
