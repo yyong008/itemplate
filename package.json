@@ -1,0 +1,35 @@
+{
+  "name": "itemplate",
+  "version": "0.0.0",
+  "description": "a cli that start blank project from target template",
+  "main": "index.js",
+  "type": "module",
+  "bin": {
+    "itpl": "./src/index.js"
+  },
+  "scripts": {
+    "dev": "node ./src/index.js"
+  },
+  "keywords": [
+    "cli",
+    "template",
+    "git",
+    "github",
+    "degit"
+  ],
+  "author": "Magnesium",
+  "license": "ISC",
+  "dependencies": {
+    "@clack/prompts": "^0.6.3",
+    "chalk": "^5.2.0",
+    "commander": "^10.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yyong008/itemplate"
+  },
+  "files": [
+    "/src/*",
+    "package.json"
+  ]
+}
