@@ -1,7 +1,7 @@
 {
   "name": "itpls",
-  "version": "0.0.0",
-  "description": "a cli that start blank project from target template",
+  "version": "0.0.1",
+  "description": "A CLI tool that fills empty Git projects with templates",
   "main": "index.js",
   "type": "module",
   "bin": {
@@ -30,6 +30,8 @@
   },
   "files": [
     "/src/*",
-    "package.json"
+    "package.json",
+    "README.md",
+    "README-CN.md"
   ]
 }
