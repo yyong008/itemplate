@@ -15,8 +15,8 @@ const editorOptions = [
 
 program.command("create").action(async () => {
   main().catch((e) => {
-    console.error(e);
-    process.exit(0);
+    console.error(e)
+    process.exit(0)
   });
 });
 
@@ -30,49 +30,50 @@ async function main() {
 
   const project = await p.group(
     {
-      project_addr: () =>
+      github_addr: () =>
         p.text({
-          message: "空项目",
-          placeholder: "git@github.com:yyong008/tt.git",
-          initialValue: "git@github.com:yyong008/tt.git",
+          message: "请输入空白 github 地址",
+          placeholder:
+            "使用 https 或者 ssh 模式 (例如：git@github.com:<github_your>/<github_project>.git)",
+          initialValue: "",
           validate(value) {
             if (value.length === 0) return `Value is required!`;
           },
         }),
       template_name: () =>
         p.text({
-          message: "模板",
-          placeholder: "yyong008/remix-antd-admin",
-          initialValue: "yyong008/remix-antd-admin",
+          message: "🔣请输入模板地址: `<github_your>/<github_project>`",
+          placeholder: "<github_your>/<github_project>",
+          initialValue: "",
           validate(value) {
             if (value.length === 0) return `Value is required!`;
           },
         }),
       download: () =>
         p.confirm({
-          message: "下载：模板项目/目标空白项目",
+          message: "📥下载项目",
           initialValue: true,
         }),
       install: () =>
         p.confirm({
-          message: "Install dependencies?",
+          message: "🏗︎ Install dependencies?",
           initialValue: true,
         }),
       editor: () =>
         p.select({
-          message: "选择一个趁手编辑器",
+          message: "✅选择一个趁手编辑器",
           initialValues: ["code"],
           options: editorOptions,
         }),
       open: (...args) => {
-        let currentEditor;
-        let choiceEditor = args[0].results.editor;
+        let currentEditor
+        let choiceEditor = args[0].results.editor
         editorOptions.forEach((e) => {
-          if (e.value === choiceEditor) {
-            currentEditor = e.label;
+          if(e.value === choiceEditor) {
+            currentEditor = e.label
           }
-        });
-
+        })
+        
         return p.confirm({
           message: `Open with ${currentEditor}?`,
           initialValue: true,
@@ -87,37 +88,62 @@ async function main() {
     }
   );
   const s = p.spinner();
+  let dirname = project.github_addr
+    .split("/")
+    [project.github_addr.split("/").length - 1].split(".")[0];
 
-  // 填写：新项目地址-填写模板地址
-  if(!project.download) {
-    console.log(`取消下载...`)
-    return
+    outputCwdDir(dirname)
+
+  if (project.download) {
+    await cloneGithubBlank(s, project.github_addr);
+    await cloneGithubTemplate(s, project.template_name, setCwd(dirname));
   }
-  await cloneNewProjectFromAddr(s, project.project_addr);
-  await cloneTemplateFromAddr(s, project.template_name)
 
   if (project.install) {
-    await useExecCwd(`pnpm install`);
+    await installPackages(s, dirname);
+    await useExecCwd(`pnpm install`, setCwd(dirname));
   }
 
   if (project.open) {
-    await openEditor(s, project.editor);
+    await openEditor(s, project.editor, setCwd(dirname));
   }
 
   p.outro(`🚀🚀🚀 完成！`);
 }
 
-async function cloneNewProjectFromAddr(s, project_addr) {
-  s.start(`开始克隆 ${project_addr} 项目`);
-  await useExecCwd(`git clone ${project_addr} .`);
-  s.stop(`克隆 ${project_addr} 项目结束`);
+async function cloneGithubBlank(s, github_addr) {
+  s.start("开始克隆项目");
+  await useExecCwd(`git clone ${github_addr}`);
+  s.stop("克隆项目结束");
 }
 
-async function cloneTemplateFromAddr(s, template_name) {
-  s.start(`开始克隆模板 ${template_name} 项目`);
-  // TODO:判断 degit 是否存在
-  await useExecCwd(`degit ${template_name} --force`);
-  s.stop(`克隆模板 ${template_name} 项目结束`);
+async function cloneGithubTemplate(s, template_addr, dirname) {
+  s.start("开始克隆模板");
+  await useExecCwd(`degit ${template_addr} --force`, dirname);
+  s.stop("克隆项目模板");
+}
+
+async function installPackages(s, dirname) {
+  s.start("安装依赖");
+  await useExecCwd(`pnpm install`, dirname);
+  s.stop("安装依赖结束");
+}
+
+async function openEditor(s, editor, dirname) {
+  s.start("打开编辑器");
+  await useExecCwd(`${editor} .`, dirname);
+  s.stop("打开编辑器");
+}
+
+function setCwd(dirname) {
+  if (!dirname) return process.cwd();
+  return `${process.cwd()}/${dirname}`;
+}
+
+function outputCwdDir(dirname) {
+  console.log()
+  console.log(`  ${chalk.green("工作目录：")} ${process.cwd()}/${dirname}`);
+  console.log()
 }
 
 function warning() {
@@ -156,10 +182,4 @@ function useExecCwd(shell, cwd) {
       });
     }
   });
-}
-
-async function openEditor(s, editor) {
-  s.start("打开编辑器");
-  await useExecCwd(`${editor} .`);
-  s.stop("打开编辑器");
 }
