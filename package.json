@@ -1,6 +1,6 @@
 {
   "name": "itpls",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A CLI tool that fills empty Git projects with templates",
   "main": "index.js",
   "type": "module",
@@ -32,6 +32,6 @@
     "/src/**/*.js",
     "package.json",
     "README.md",
-    "README-CN.md"
+    "README_ZH-CN.md"
   ]
 }
