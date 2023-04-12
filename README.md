@@ -1,17 +1,15 @@
 # itpls
 
->A CLI tool that fills empty Git projects with templates
+> A CLI tool that fills empty Git projects with templates
 
 - [chinese doc](./README-CN.md)
 
-
 ## Dependencies
 
-
-| Package Name | Description |
-| ------------ | ----------- |
+| Package Name | Description          |
+| ------------ | -------------------- |
 | git          | Code management tool |
-| degit        | Code download tool |
+| degit        | Code download tool   |
 
 ## Design Motivation
 
@@ -24,8 +22,14 @@ pnpm install itpls -g
 
 cd your_target_dir
 
-## starter commander
+# default use remote repositories and remote template
 itpls create
+
+# or
+itpls create -t remote
+
+# use local repositories and remote template
+itpls create -t local
 ```
 
 1. Fill in the complete github git address of the empty project

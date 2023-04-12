@@ -1,6 +1,6 @@
 {
   "name": "itpls",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "A CLI tool that fills empty Git projects with templates",
   "main": "index.js",
   "type": "module",
@@ -26,10 +26,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/yyong008/itemplate"
+    "url": "https://github.com/yyong008/itpls.git"
   },
   "files": [
-    "/src/index.js",
+    "/src/**/*.js",
     "package.json",
     "README.md",
     "README-CN.md"

@@ -22,8 +22,14 @@ pnpm install itpls -g
 
 cd your_target_dir
 
-## starter commander
+# 默认使用远程仓库和模板
 itpls create
+
+# or
+itpls create -t remote
+
+# 使用本地仓库 + 远程模板
+itpls create -t local
 ```
 
 1. 填写空的 github 完整 git 地址
